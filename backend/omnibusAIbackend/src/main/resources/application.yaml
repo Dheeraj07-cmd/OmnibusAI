@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: omnibusAIbackend
+
+  datasource:
+    url: ${MYSQL_URI}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  ai:
+    openai:
+      base-url: ${OPENAI_BASE_URI}
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: ${OPENAI_MODEL}
+
+server:
+  port: ${PORT:8080}
+
+application:
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET}
+      expiration: ${JWT_EXPIRATION}
+
+brevo:
+  api:
+    key: ${BREVO_API_KEY}
+  sender:
+    email: ${BREVO_SENDER_EMAIL}
+
+cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME}
+  api-key: ${CLOUDINARY_API_KEY}
+  api-secret: ${CLOUDINARY_API_SECRET}
