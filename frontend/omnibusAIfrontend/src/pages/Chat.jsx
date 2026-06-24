@@ -71,8 +71,8 @@ export default function Chat() {
         newMessages[newMessages.length - 1] = { role: 'assistant', content: '**Error:** Unable to connect.' };
         return newMessages;
       });
-    } finally { 
-      setIsLoading(false); 
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -94,10 +94,14 @@ export default function Chat() {
               )}
               <div className={`px-4 py-3 md:px-5 md:py-3.5 rounded-2xl max-w-[95%] md:max-w-[80%] ${msg.role === 'user' ? 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 rounded-tr-xs' : 'bg-transparent text-neutral-800 dark:text-neutral-200'}`}>
                 {msg.role === 'user' ? (
-                  <p className="whitespace-pre-wrap text-sm md:text-base">{msg.content}</p>
+                  <p className="whitespace-pre-wrap text-sm md:text-base">
+                    {msg.content}
+                  </p>
                 ) : (
                   <div className="prose dark:prose-invert max-w-none text-sm md:text-base leading-relaxed">
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.content}</ReactMarkdown>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {msg.content}
+                    </ReactMarkdown>
                   </div>
                 )}
               </div>
@@ -108,7 +112,10 @@ export default function Chat() {
       </div>
       <div className="p-4 border-t border-neutral-200 dark:border-neutral-800 bg-white/50 dark:bg-neutral-900/50 backdrop-blur-md">
         <form onSubmit={handleSend} className="max-w-4xl mx-auto relative flex items-center">
-          <Input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Ask OmnibusAI anything..." className="w-full pr-12 py-6 rounded-xl bg-neutral-100 dark:bg-neutral-800 border-none shadow-inner text-base" disabled={isLoading} />
+          <Input value={input} onChange={(e) => setInput(e.target.value)}
+            placeholder="Ask OmnibusAI anything..."
+            className="w-full pr-12 py-6 rounded-xl bg-neutral-100 dark:bg-neutral-800 border-none shadow-inner text-base"
+            disabled={isLoading} />
           <Button type="submit" size="icon" disabled={isLoading || !input.trim()} className="absolute right-2 rounded-lg">
             {isLoading ? <Loader2 className="animate-spin" size={18} /> : <Send size={18} />}
           </Button>

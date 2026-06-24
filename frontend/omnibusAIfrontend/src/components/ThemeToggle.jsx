@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 export default function ThemeToggle() {
   const [dark, setDark] = useState(false);
 
-  // Check initial state on mount
+  // Check initial state
   useEffect(() => {
     const isDark = document.documentElement.classList.contains("dark");
     setDark(isDark);

@@ -4,7 +4,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { Home, Activity, MessageSquare, Search, BookOpen, FileText, Bookmark, Settings, PanelLeftClose, PanelLeft, LogOut, Plus, Code2 } from 'lucide-react';
 import useAuthStore from '../../store/authStore';
 import { Button } from '@/components/ui/button';
-import ThemeToggle from '../ThemeToggle'; // Import the toggle
+import ThemeToggle from '../ThemeToggle'; 
 
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(window.innerWidth < 768);
@@ -21,6 +21,7 @@ export default function Sidebar() {
 
   const navItems = [
     { name: 'Chat', icon: MessageSquare, path: '/dashboard/chat' },
+    { name: 'Documents', icon: FileText, path: '/dashboard/documents' },
   ];
 
   return (
@@ -48,19 +49,22 @@ export default function Sidebar() {
           ))}
         </nav>
         <div className="p-4 border-t border-neutral-200 dark:border-neutral-800 space-y-2">
-          {/* Settings & Logout Wrapper */}
+          {/* Settings & Logout */}
           <div className="flex flex-col space-y-2">
             <Button variant="ghost" className={`w-full justify-start ${isCollapsed ? 'px-0 justify-center' : ''}`}>
               <Settings size={20} className={!isCollapsed ? 'mr-2' : ''} /> {!isCollapsed && <span>Settings</span>}
             </Button>
+
             <Button variant="ghost" onClick={handleLogout} className={`w-full text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 justify-start ${isCollapsed ? 'px-0 justify-center' : ''}`}>
               <LogOut size={20} className={!isCollapsed ? 'mr-2' : ''} /> {!isCollapsed && <span>Logout</span>}
             </Button>
           </div>
-          {/* Theme Toggle pinned at the bottom */}
+
+          {/* Theme Toggle */}
           <div className={`pt-2 flex ${isCollapsed ? 'justify-center' : 'justify-end'}`}>
             <ThemeToggle />
           </div>
+
         </div>
       </motion.div>
     </>

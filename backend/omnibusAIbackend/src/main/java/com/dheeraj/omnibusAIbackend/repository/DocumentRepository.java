@@ -1,0 +1,10 @@
+package com.dheeraj.omnibusAIbackend.repository;
+
+import com.dheeraj.omnibusAIbackend.entity.Document;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+
+public interface DocumentRepository extends JpaRepository<Document, Long> {
+    List<Document> findByUserIdOrderByUpdatedAtDesc(Long userId);
+    long countByUserId(Long userId);
+}
