@@ -21,6 +21,7 @@ export default function Sidebar() {
 
   const navItems = [
     { name: 'Chat', icon: MessageSquare, path: '/dashboard/chat' },
+    { name: 'Research', icon: Search, path: '/dashboard/research' },
     { name: 'Documents', icon: FileText, path: '/dashboard/documents' },
   ];
 
