@@ -23,6 +23,7 @@ export default function Sidebar() {
     { name: 'Chat', icon: MessageSquare, path: '/dashboard/chat' },
     { name: 'Research', icon: Search, path: '/dashboard/research' },
     { name: 'Documents', icon: FileText, path: '/dashboard/documents' },
+    { name: 'Files', icon: BookOpen, path: '/dashboard/files' },
   ];
 
   return (
