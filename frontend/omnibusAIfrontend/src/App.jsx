@@ -8,6 +8,8 @@ import Chat from './pages/Chat';
 import Documents from './pages/Documents';
 import Research from './pages/Research';
 import Files from './pages/Files';
+import DashboardHome from './pages/DashboardHome';
+import Analytics from './pages/Analytics';
 // Protects internal routes from logged-out users
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -50,6 +52,7 @@ function App() {
           <Route path="research" element={<Research />} />
           <Route path="documents" element={<Documents />} />
           <Route path="files" element={<Files />} />
+          <Route path="analytics" element={<Analytics />} />
         </Route>
 
         {/* Catch-all */}
