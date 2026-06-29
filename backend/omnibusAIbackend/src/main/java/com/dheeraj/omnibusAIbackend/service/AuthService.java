@@ -30,7 +30,7 @@ public class AuthService {
                 .build();
         repository.save(user);
         var jwtToken = jwtService.generateToken(user);
-        return new AuthenticationResponse(jwtToken);
+        return new AuthenticationResponse(jwtToken, user.getEmail(), user.getName());
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -39,6 +39,8 @@ public class AuthService {
         );
         var user = repository.findByEmail(request.email()).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
-        return new AuthenticationResponse(jwtToken);
+        String safeName = user.getName() != null ? user.getName() : "Explorer";
+        return new AuthenticationResponse(jwtToken, user.getEmail(), safeName);
     }
 }
+

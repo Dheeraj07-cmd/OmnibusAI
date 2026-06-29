@@ -8,6 +8,7 @@ import Chat from './pages/Chat';
 import Documents from './pages/Documents';
 import Research from './pages/Research';
 import Files from './pages/Files';
+import Bookmarks from './pages/Bookmarks';
 import DashboardHome from './pages/DashboardHome';
 import Analytics from './pages/Analytics';
 // Protects internal routes from logged-out users
@@ -52,6 +53,7 @@ function App() {
           <Route path="research" element={<Research />} />
           <Route path="documents" element={<Documents />} />
           <Route path="files" element={<Files />} />
+          <Route path="bookmarks" element={<Bookmarks />} />
           <Route path="analytics" element={<Analytics />} />
         </Route>
 
