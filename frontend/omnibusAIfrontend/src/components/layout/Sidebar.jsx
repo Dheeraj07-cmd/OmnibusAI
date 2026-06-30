@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom'; 
 import { Home, Activity, MessageSquare, Search, BookOpen, FileText, Bookmark, Settings, PanelLeftClose, PanelLeft, LogOut, Plus, Code2, Sparkles } from 'lucide-react';
 import useAuthStore from '../../store/authStore';
 import { Button } from '@/components/ui/button';
@@ -28,6 +29,7 @@ export default function Sidebar() {
     { name: 'Documents', icon: FileText, path: '/dashboard/documents' },
     { name: 'Files', icon: BookOpen, path: '/dashboard/files' },
     { name: 'Bookmarks', icon: Bookmark, path: '/dashboard/bookmarks' },
+    { name: 'Code Assist', icon: Code2, path: '/dashboard/code' },
   ];
 
   return (
