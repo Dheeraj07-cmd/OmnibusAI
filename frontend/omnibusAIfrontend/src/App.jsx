@@ -53,6 +53,7 @@ function App() {
         <Route path="/dashboard" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
           <Route index element={<DashboardHome />} />
           <Route path="chat" element={<Chat />} />
+          <Route path="chat/:id" element={<Chat />} />
           <Route path="prompts" element={<PromptLibrary />} />
           <Route path="research" element={<Research />} />
           <Route path="documents" element={<Documents />} />

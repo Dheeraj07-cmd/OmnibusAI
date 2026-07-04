@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom'; 
 import { Home, Activity, MessageSquare, Search, BookOpen, FileText, Bookmark, Settings, PanelLeftClose, PanelLeft, LogOut, Plus, Code2, Sparkles } from 'lucide-react';
 import useAuthStore from '../../store/authStore';
+import useChatStore from '../../store/chatStore';
 import { Button } from '@/components/ui/button';
 import ThemeToggle from '../ThemeToggle';
 
@@ -18,7 +19,13 @@ export default function Sidebar() {
     const handleResize = () => { if (window.innerWidth < 768) setIsCollapsed(true); };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [fetchConversations]);
+
+  const handleNewChat = () => {
+    clearCurrentChat();
+    navigate('/dashboard/chat');
+    if (window.innerWidth < 768) setIsCollapsed(true);
+  };
 
   const handleLogout = () => { logout(); navigate('/login'); };
 
