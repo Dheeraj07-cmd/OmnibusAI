@@ -20,6 +20,11 @@ spring:
       chat:
         options:
           model: ${OPENAI_MODEL}
+gemini:
+  native:
+    api-key: ${GEMINI_API_KEY}
+    base-url: ${GEMINI_BASE_URI}
+    embedding-model: ${GEMINI_MODEL}
 
 server:
   port: ${PORT:8080}

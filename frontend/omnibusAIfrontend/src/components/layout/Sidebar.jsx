@@ -24,6 +24,7 @@ export default function Sidebar() {
 
   const navItems = [
     { name: 'Overview', icon: Home, path: '/dashboard' },
+    { name: 'Prompt Hub', icon: Sparkles, path: '/dashboard/prompts' },
     { name: 'Analytics', icon: Activity, path: '/dashboard/analytics' },
     { name: 'Research', icon: Search, path: '/dashboard/research' },
     { name: 'Documents', icon: FileText, path: '/dashboard/documents' },

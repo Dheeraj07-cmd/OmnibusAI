@@ -12,6 +12,7 @@ import CodeWorkspace from './pages/CodeWorkspace';
 import Bookmarks from './pages/Bookmarks';
 import DashboardHome from './pages/DashboardHome';
 import Analytics from './pages/Analytics';
+import PromptLibrary from './pages/PromptLibrary';
 
 // Protects internal routes from logged-out users
 const ProtectedRoute = ({ children }) => {
@@ -52,6 +53,7 @@ function App() {
         <Route path="/dashboard" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
           <Route index element={<DashboardHome />} />
           <Route path="chat" element={<Chat />} />
+          <Route path="prompts" element={<PromptLibrary />} />
           <Route path="research" element={<Research />} />
           <Route path="documents" element={<Documents />} />
           <Route path="files" element={<Files />} />
