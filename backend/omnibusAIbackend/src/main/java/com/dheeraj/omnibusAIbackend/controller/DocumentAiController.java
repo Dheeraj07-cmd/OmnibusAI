@@ -16,8 +16,9 @@ public class DocumentAiController {
     private final AnalyticsService analyticsService;
 
     public DocumentAiController(ChatClient.Builder chatClientBuilder, AnalyticsService analyticsService) {
+        // Tell AI to use Markdown only
         this.chatClient = chatClientBuilder
-                .defaultSystem("You are an expert co-writer integrated inside a rich text editor. Your job is to modify, expand, or rewrite the provided text based strictly on the user's instructions. Return only the raw text or HTML structure requested without conversational intros or outros.")
+                .defaultSystem("You are an expert co-writer integrated inside a Markdown text editor. Your job is to modify, expand, or write new text based strictly on the user's instructions. Return your response in clean Markdown format. Do not use conversational filler like 'Here is your text'.")
                 .build();
         this.analyticsService = analyticsService;
     }
@@ -47,7 +48,6 @@ public class DocumentAiController {
                     int promptTokens = (int) (promptText.split("\\s+").length * 1.5);
                     int responseTokens = (int) (fullResponse.toString().split("\\s+").length * 1.5);
                     int totalTokens = promptTokens + responseTokens;
-
                     analyticsService.logActivity(user, "AI Document Assist", "Documents", "Success", totalTokens);
                 })
                 .map(response -> {

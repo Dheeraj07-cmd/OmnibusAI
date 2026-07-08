@@ -19,7 +19,7 @@ import java.util.List;
 public class DocumentController {
 
     private final DocumentRepository documentRepository;
-    private final AnalyticsService analyticsService; // Restored
+    private final AnalyticsService analyticsService;
 
     @GetMapping
     public ResponseEntity<List<Document>> getUserDocuments(@AuthenticationPrincipal User user) {
@@ -53,5 +53,19 @@ public class DocumentController {
         }
 
         return ResponseEntity.ok(documentRepository.save(document));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteDocument(@AuthenticationPrincipal User user, @PathVariable Long id) {
+        Document doc = documentRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Document not found"));
+
+        if (!doc.getUser().getId().equals(user.getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
+        }
+
+        documentRepository.delete(doc);
+        analyticsService.logActivity(user, "Deleted Document", "Documents", "Success", 0);
+        return ResponseEntity.noContent().build();
     }
 }
