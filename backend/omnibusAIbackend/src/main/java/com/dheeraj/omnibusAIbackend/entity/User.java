@@ -40,6 +40,13 @@ public class User implements UserDetails {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "two_factor_secret")
+    private String twoFactorSecret;
+
+    @Column(name = "is_two_factor_enabled", nullable = false)
+    @Builder.Default
+    private boolean isTwoFactorEnabled = false;
+
     public enum Role { USER, ADMIN }
 
     @Override

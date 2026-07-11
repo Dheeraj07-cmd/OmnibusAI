@@ -5,12 +5,13 @@ import { Home, Activity, MessageSquare, Search, BookOpen, FileText, Bookmark, Se
 import useAuthStore from '../../store/authStore';
 import useChatStore from '../../store/chatStore';
 import { Button } from '@/components/ui/button';
-import ThemeToggle from '../ThemeToggle';
+import SettingsModal from '../SettingsModal';
 
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(window.innerWidth < 768);
   const logout = useAuthStore((state) => state.logout);
   const { conversations, fetchConversations, clearCurrentChat } = useChatStore();
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -96,7 +97,7 @@ export default function Sidebar() {
         {/* Footer */}
         <div className="p-4 border-t border-neutral-200 dark:border-neutral-800 space-y-2 shrink-0">
           <div className="flex flex-col space-y-2">
-            <Button variant="ghost" className={`w-full justify-start ${isCollapsed ? 'px-0 justify-center' : ''}`}>
+            <Button variant="ghost" onClick={() => setIsSettingsOpen(true)} className={`w-full justify-start cursor-pointer ${isCollapsed ? 'px-0 justify-center' : ''}`}>
               <Settings size={20} className={!isCollapsed ? 'mr-2' : ''} />
               {!isCollapsed && <span>Settings</span>}
             </Button>
@@ -106,13 +107,10 @@ export default function Sidebar() {
               {!isCollapsed && <span>Logout</span>}
             </Button>
           </div>
-
-          <div className={`pt-2 flex ${isCollapsed ? 'justify-center' : 'justify-end'}`}>
-            <ThemeToggle />
-          </div>
         </div>
-
       </motion.div>
+      
+      <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </>
   );
 }

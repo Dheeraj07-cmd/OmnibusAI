@@ -3,6 +3,7 @@ package com.dheeraj.omnibusAIbackend.controller;
 import com.dheeraj.omnibusAIbackend.dto.AuthDTO.AuthenticationRequest;
 import com.dheeraj.omnibusAIbackend.dto.AuthDTO.AuthenticationResponse;
 import com.dheeraj.omnibusAIbackend.dto.AuthDTO.RegisterRequest;
+import com.dheeraj.omnibusAIbackend.dto.UserDTO.Verify2FARequest;
 import com.dheeraj.omnibusAIbackend.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,5 +23,10 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(authService.authenticate(request));
+    }
+
+    @PostMapping("/verify-2fa")
+    public ResponseEntity<AuthenticationResponse> verify2FA(@RequestBody Verify2FARequest request) {
+        return ResponseEntity.ok(authService.verify2FALogin(request));
     }
 }

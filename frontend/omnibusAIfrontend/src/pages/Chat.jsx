@@ -42,34 +42,45 @@ export default function Chat() {
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    if (id) {
-      const activeId = useChatStore.getState().currentConversation?.id;
-      if (activeId !== Number(id)) {
-        loadConversation(id);
+    const initializeChat = async () => {
+      if (id) {
+        const activeId = useChatStore.getState().currentConversation?.id;
+        if (activeId !== Number(id)) {
+          await loadConversation(id);
+        }
+      } else {
+        clearCurrentChat();
+        setIsCanvasOpen(false);
       }
-    } else {
-      clearCurrentChat();
-      setIsCanvasOpen(false);
-    }
-  }, [id, loadConversation, clearCurrentChat]);
+    };
+
+    initializeChat();
+  }, [id]);
 
   useEffect(() => {
     const promptQuery = searchParams.get('prompt');
     if (promptQuery && !id) {
       setInput(promptQuery);
-      setSearchParams({});
+      setSearchParams({}, { replace: true });
     }
   }, [searchParams, id]);
 
   useEffect(() => {
     if (currentConversation?.aiModel) {
       const found = AI_MODELS.find(m => m.id === currentConversation.aiModel);
-      if (found) setSelectedModel(found);
+      if (found && found.id !== selectedModel.id) {
+        setSelectedModel(found);
+      }
     }
-  }, [currentConversation]);
+  }, [currentConversation?.aiModel]);
 
-  const scrollToBottom = () => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  useEffect(() => scrollToBottom(), [messages]);
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const handleCopyCanvas = () => {
     if (canvas) {
@@ -187,11 +198,11 @@ export default function Chat() {
   }
 
   const MarkdownComponents = {
-    code({ node, className, children, ...props }) {
+    code({ node, inline, className, children, ...props }) {
       const match = /language-(\w+)/.exec(className || '');
       const codeString = String(children).replace(/\n$/, '');
 
-      if (match) {
+      if (!inline && match) {
         return (
           <div className="relative group mt-4 mb-4 rounded-xl overflow-hidden bg-neutral-900 border border-neutral-800 shadow-sm hover:shadow-md transition-shadow duration-300">
             <div className="flex items-center justify-between px-4 py-2 bg-neutral-950 text-neutral-400 text-xs border-b border-neutral-800">
@@ -335,7 +346,7 @@ export default function Chat() {
             />
 
             <motion.div className="absolute right-2 z-20" whileHover={!isLoading && input.trim() ? { scale: 1.05 } : {}} whileTap={!isLoading && input.trim() ? { scale: 0.95 } : {}}>
-              <Button type="submit" size="icon" disabled={isLoading || !input.trim()} className={`rounded-xl transition-all duration-300 ${input.trim() && !isLoading ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-md shadow-blue-500/30' : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-400'}`}>
+              <Button type="submit" size="icon" disabled={isLoading || !input.trim()} className={`rounded-xl transition-all duration-300 ${input.trim() && !isLoading ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-md shadow-blue-500/30 cursor-pointer' : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-400'}`}>
                 {isLoading ? <Loader2 className="animate-spin" size={18} /> : <Send size={18} className={input.trim() ? 'translate-x-[-1px] translate-y-[1px]' : ''} />}
               </Button>
             </motion.div>

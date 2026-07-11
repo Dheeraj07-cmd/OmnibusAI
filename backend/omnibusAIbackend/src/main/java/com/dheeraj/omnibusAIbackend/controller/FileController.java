@@ -39,13 +39,12 @@ public class FileController {
             fileIntelligenceService.processAndStoreFile(file);
 
             // Upload to Cloudinary for permanent storage
-            @SuppressWarnings("unchecked")
-            Map<String, Object> uploadResult = cloudinaryService.uploadFile(file);
+            String documentUrl = cloudinaryService.uploadFile(file, String.valueOf(user.getId()));
 
             FileRecord record = FileRecord.builder()
                     .user(user)
                     .fileName(file.getOriginalFilename())
-                    .fileUrl(uploadResult.get("secure_url").toString())
+                    .fileUrl(documentUrl)
                     .fileType(file.getContentType())
                     .fileSize(file.getSize())
                     .build();
