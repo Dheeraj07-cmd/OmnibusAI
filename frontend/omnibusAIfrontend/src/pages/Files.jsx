@@ -15,7 +15,7 @@ export default function Files() {
   const [files, setFiles] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [uploadError, setUploadError] = useState(''); 
+  const [uploadError, setUploadError] = useState('');
   const fileInputRef = useRef(null);
   const token = useAuthStore((state) => state.token);
 
@@ -24,27 +24,27 @@ export default function Files() {
   const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => { fetchFiles(); }, []);
-  
-  const fetchFiles = async () => { 
-    try { const res = await api.get('/files'); setFiles(res.data); } catch (e) { console.error(e); } 
+
+  const fetchFiles = async () => {
+    try { const res = await api.get('/files'); setFiles(res.data); } catch (e) { console.error(e); }
   };
 
   const handleUpload = async (selectedFile) => {
     if (!selectedFile) return;
     setIsUploading(true);
-    setUploadError(''); 
-    
-    const formData = new FormData(); 
+    setUploadError('');
+
+    const formData = new FormData();
     formData.append('file', selectedFile);
-    
-    try { 
-        await api.post('/files/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } }); 
-        fetchFiles(); 
-    } catch (err) { 
-        setUploadError(err.response?.data?.error || 'Upload failed. The AI provider may be busy.');
-    } finally { 
-        setIsUploading(false); 
-        if (fileInputRef.current) fileInputRef.current.value = ''; 
+
+    try {
+      await api.post('/files/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      fetchFiles();
+    } catch (err) {
+      setUploadError(err.response?.data?.error || 'Upload failed. The AI provider may be busy.');
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
 
@@ -53,7 +53,7 @@ export default function Files() {
     if (!query.trim()) return;
     setIsSearching(true);
     setChatResponse('');
-    
+
     try {
       const response = await fetch(`${API_BASE_URL}/files/chat/stream?query=${encodeURIComponent(query)}`, {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -63,21 +63,21 @@ export default function Files() {
       const reader = response.body.getReader();
       const decoder = new TextDecoder('utf-8');
 
-      let resultQueue = ""; 
-      let currentDisplayedText = ""; 
-      let isTyping = false; 
-      let buffer = ""; 
+      let resultQueue = "";
+      let currentDisplayedText = "";
+      let isTyping = false;
+      let buffer = "";
 
       const processQueue = async () => {
         if (isTyping) return;
         isTyping = true;
-        
+
         while (resultQueue.length > 0) {
           const charsToType = resultQueue.substring(0, 2);
           resultQueue = resultQueue.substring(2);
           currentDisplayedText += charsToType;
           setChatResponse(currentDisplayedText);
-          await new Promise((resolve) => setTimeout(resolve, 25)); 
+          await new Promise((resolve) => setTimeout(resolve, 25));
         }
         isTyping = false;
       };
@@ -88,7 +88,7 @@ export default function Files() {
         if (value) {
           buffer += decoder.decode(value, { stream: true });
           const events = buffer.split('\n\n');
-          buffer = events.pop(); 
+          buffer = events.pop();
 
           for (const event of events) {
             const dataLines = event.split('\n').filter(line => line.startsWith('data:')).map(line => line.replace(/^data:\s*/, ''));
@@ -123,7 +123,7 @@ export default function Files() {
   return (
     <div className="flex flex-col h-full bg-neutral-50 dark:bg-neutral-950 p-4 md:p-10 overflow-y-auto overflow-x-hidden">
       <div className="max-w-6xl mx-auto w-full space-y-8">
-        
+
         {/* Header Styling */}
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="relative">
           <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -136,38 +136,38 @@ export default function Files() {
         {/* Chat Box */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
           <Card className="p-5 md:p-8 border-blue-200 dark:border-blue-900/50 bg-gradient-to-br from-blue-50/80 to-indigo-50/30 dark:from-blue-950/30 dark:to-neutral-900/50 shadow-md rounded-3xl relative overflow-hidden backdrop-blur-xl">
-             <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none"><Sparkles size={120} /></div>
-             
-             <form onSubmit={handleAskFiles} className="relative z-10 max-w-3xl">
-               <h3 className="font-bold text-lg text-blue-900 dark:text-blue-100 mb-4 flex items-center gap-2">
-                 <Sparkles size={20} className="text-blue-500 animate-pulse" /> Chat with your Vector Database
-               </h3>
-               
-               <div className="flex flex-col sm:flex-row gap-3">
-                 <Input 
-                   value={query} 
-                   onChange={(e) => setQuery(e.target.value)} 
-                   placeholder="e.g. 'Summarize the Q3 report' or 'What is the refund policy?'" 
-                   className="flex-1 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md border-blue-100 dark:border-blue-800 text-sm h-12 shadow-inner focus-visible:ring-blue-500" 
-                   disabled={isSearching} 
-                 />
-                 
-                 <Button type="submit" disabled={isSearching || !query} className="bg-blue-600 hover:bg-blue-700 text-white h-12 px-8 shadow-lg shadow-blue-500/20 cursor-pointer w-full sm:w-auto">
-                   {isSearching ? <Loader2 size={18} className="animate-spin" /> : <><Send size={18} className="mr-2" /> Query Data</>}
-                 </Button>
-               </div>
-             </form>
+            <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none"><Sparkles size={120} /></div>
 
-             {/* Response Container */}
-             <AnimatePresence>
-               {chatResponse && (
-                 <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="mt-6 p-6 bg-white dark:bg-neutral-900 rounded-2xl border border-blue-100 dark:border-blue-900/40 shadow-sm relative z-10">
-                   <div className="prose dark:prose-invert max-w-none text-sm md:text-base leading-relaxed">
-                     <ReactMarkdown remarkPlugins={[remarkGfm]}>{chatResponse}</ReactMarkdown>
-                   </div>
-                 </motion.div>
-               )}
-             </AnimatePresence>
+            <form onSubmit={handleAskFiles} className="relative z-10 max-w-3xl">
+              <h3 className="font-bold text-lg text-blue-900 dark:text-blue-100 mb-4 flex items-center gap-2">
+                <Sparkles size={20} className="text-blue-500 animate-pulse" /> Chat with your Vector Database
+              </h3>
+
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="e.g. 'Summarize the Q3 report' or 'What is the refund policy?'"
+                  className="flex-1 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md border-blue-100 dark:border-blue-800 text-sm h-12 shadow-inner focus-visible:ring-blue-500"
+                  disabled={isSearching}
+                />
+
+                <Button type="submit" disabled={isSearching || !query} className="bg-blue-600 hover:bg-blue-700 text-white h-12 px-8 shadow-lg shadow-blue-500/20 cursor-pointer w-full sm:w-auto">
+                  {isSearching ? <Loader2 size={18} className="animate-spin" /> : <><Send size={18} className="mr-2" /> Query Data</>}
+                </Button>
+              </div>
+            </form>
+
+            {/* Response Container */}
+            <AnimatePresence>
+              {chatResponse && (
+                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="mt-6 p-6 bg-white dark:bg-neutral-900 rounded-2xl border border-blue-100 dark:border-blue-900/40 shadow-sm relative z-10">
+                  <div className="prose dark:prose-invert max-w-none text-sm md:text-base leading-relaxed">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{chatResponse}</ReactMarkdown>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </Card>
         </motion.div>
 
@@ -176,14 +176,14 @@ export default function Files() {
           <Card onDragOver={onDragOver} onDragLeave={onDragLeave} onDrop={onDrop}
             onClick={() => !isUploading && fileInputRef.current?.click()}
             className={`border-2 transition-all duration-300 cursor-pointer p-10 md:p-16 text-center rounded-3xl relative overflow-hidden group
-              ${isDragging 
-                ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 scale-[1.02] border-solid shadow-xl' 
+              ${isDragging
+                ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 scale-[1.02] border-solid shadow-xl'
                 : 'border-dashed border-neutral-300 dark:border-neutral-700 bg-white/50 dark:bg-neutral-900/50 hover:bg-neutral-50 dark:hover:bg-neutral-900 hover:border-neutral-400 dark:hover:border-neutral-600'}
               ${isUploading ? 'opacity-70 pointer-events-none' : ''}`}
           >
             {/* Animated dotted border effect */}
             {!isDragging && !isUploading && (
-               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none bg-[linear-gradient(90deg,transparent_50%,rgba(59,130,246,0.1)_50%)] bg-[length:20px_100%] animate-[slide_1s_linear_infinite]" />
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none bg-[linear-gradient(90deg,transparent_50%,rgba(59,130,246,0.1)_50%)] bg-[length:20px_100%] animate-[slide_1s_linear_infinite]" />
             )}
 
             <input type="file" className="hidden" ref={fileInputRef} onChange={(e) => handleUpload(e.target.files[0])} accept=".txt,.pdf,.md,.csv,.json" />
@@ -206,12 +206,12 @@ export default function Files() {
             {uploadError && (
               <motion.div initial={{ opacity: 0, y: -10, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
                 className="mt-4 flex items-center gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 dark:border-red-900/40 dark:bg-red-950/30 dark:text-red-300 shadow-sm">
-                  <AlertCircle size={20} className="shrink-0" />
-                  <span className="flex-1 font-medium">{uploadError}</span>
-                  
-                  <button onClick={() => setUploadError("")} className="text-red-500 hover:text-red-700 dark:hover:text-red-200 p-1 bg-red-100 dark:bg-red-900/50 rounded-full cursor-pointer transition-colors">
-                    <X size={16} />
-                  </button>
+                <AlertCircle size={20} className="shrink-0" />
+                <span className="flex-1 font-medium">{uploadError}</span>
+
+                <button onClick={() => setUploadError("")} className="text-red-500 hover:text-red-700 dark:hover:text-red-200 p-1 bg-red-100 dark:bg-red-900/50 rounded-full cursor-pointer transition-colors">
+                  <X size={16} />
+                </button>
               </motion.div>
             )}
           </AnimatePresence>
@@ -222,7 +222,7 @@ export default function Files() {
           <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
             <Database size={20} className="text-neutral-400" /> Vectorized Library
           </h2>
-          
+
           {files.length === 0 ? (
             <div className="text-center text-neutral-400 py-16 bg-white/50 dark:bg-neutral-900/50 rounded-3xl border border-dashed border-neutral-300 dark:border-neutral-700 text-sm">
               <File size={40} className="mx-auto mb-4 opacity-20" />

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { NavLink, useNavigate, useLocation } from 'react-router-dom'; 
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { Home, Activity, MessageSquare, Search, BookOpen, FileText, Bookmark, Settings, PanelLeftClose, PanelLeft, LogOut, Plus, Code2, Sparkles } from 'lucide-react';
 import useAuthStore from '../../store/authStore';
 import useChatStore from '../../store/chatStore';
@@ -48,7 +48,18 @@ export default function Sidebar() {
 
         {/* Header */}
         <div className="h-16 flex items-center justify-between px-4 border-b border-neutral-200 dark:border-neutral-800 shrink-0">
-          {!isCollapsed && <span className="font-bold text-lg tracking-tight truncate">OmnibusAI</span>}
+          {!isCollapsed &&
+            <div className="flex items-center gap-2.5">
+              <img src="/omnibus-logo1.png" alt="OmnibusAI" className="w-12 h-12 object-contain" />
+
+              {!isCollapsed && (
+                <h1 className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
+                  OmnibusAI
+                </h1>
+              )}
+            </div>
+          }
+
           <Button variant="ghost" size="icon" onClick={() => setIsCollapsed(!isCollapsed)} className="ml-auto">
             {isCollapsed ? <PanelLeft size={20} /> : <PanelLeftClose size={20} />}
           </Button>
@@ -109,7 +120,7 @@ export default function Sidebar() {
           </div>
         </div>
       </motion.div>
-      
+
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </>
   );

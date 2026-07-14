@@ -13,6 +13,9 @@ import Bookmarks from './pages/Bookmarks';
 import DashboardHome from './pages/DashboardHome';
 import Analytics from './pages/Analytics';
 import PromptLibrary from './pages/PromptLibrary';
+import ReleaseNotes from './pages/legal/ReleaseNotes';
+import PrivacyPolicy from './pages/legal/PrivacyPolicy';
+import TermsOfService from './pages/legal/TermsOfService';
 
 // Protects internal routes from logged-out users
 const ProtectedRoute = ({ children }) => {
@@ -62,6 +65,10 @@ function App() {
           <Route path="code" element={<CodeWorkspace />} />
           <Route path="analytics" element={<Analytics />} />
         </Route>
+        
+        <Route path="/releases" element={<ReleaseNotes />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<TermsOfService />} />
 
         {/* Catch-all */}
         <Route path="*" element={<Navigate to="/" replace />} />

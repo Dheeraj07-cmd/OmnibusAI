@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import ThemeToggle from '../components/ThemeToggle';
+import { Link } from 'react-router-dom';
 
 export default function SettingsModal({ isOpen, onClose }) {
     const user = useAuthStore((state) => state.user);
@@ -361,17 +362,24 @@ export default function SettingsModal({ isOpen, onClose }) {
                                             </div>
 
                                             <div className="border border-neutral-200 dark:border-neutral-800 rounded-2xl overflow-hidden bg-white dark:bg-neutral-900">
-                                                <a href="https://github.com/your-repo/OmnibusAI/releases" target="_blank" rel="noreferrer" className="flex items-center justify-between p-4 hover:bg-neutral-50 dark:hover:bg-neutral-950 transition-colors group border-b border-neutral-100 dark:border-neutral-800">
-                                                    <span className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 group-hover:text-blue-600 transition-colors">Release Notes</span><ExternalLink size={14} className="text-neutral-400 group-hover:text-blue-500 transition-colors" />
-                                                </a>
-                                                <a href="/privacy-policy" target="_blank" rel="noreferrer" className="flex items-center justify-between p-4 hover:bg-neutral-50 dark:hover:bg-neutral-950 transition-colors group border-b border-neutral-100 dark:border-neutral-800">
-                                                    <span className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 group-hover:text-blue-600 transition-colors">Privacy Policy</span><ExternalLink size={14} className="text-neutral-400 group-hover:text-blue-500 transition-colors" />
-                                                </a>
-                                                <a href="/terms" target="_blank" rel="noreferrer" className="flex items-center justify-between p-4 hover:bg-neutral-50 dark:hover:bg-neutral-950 transition-colors group border-b border-neutral-100 dark:border-neutral-800">
-                                                    <span className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 group-hover:text-blue-600 transition-colors">Terms of Service</span><ExternalLink size={14} className="text-neutral-400 group-hover:text-blue-500 transition-colors" />
-                                                </a>
-                                                <a href="https://github.com/your-repo/OmnibusAI" target="_blank" rel="noreferrer" className="flex items-center justify-between p-4 hover:bg-neutral-50 dark:hover:bg-neutral-950 transition-colors group">
-                                                    <span className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 group-hover:text-blue-600 transition-colors">GitHub Repository</span><ExternalLink size={14} className="text-neutral-400 group-hover:text-blue-500 transition-colors" />
+                                                <Link to="/releases" target="_blank" className="flex items-center justify-between p-4 hover:bg-neutral-50 dark:hover:bg-neutral-950 transition-colors group border-b border-neutral-100 dark:border-neutral-800">
+                                                    <span className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 group-hover:text-blue-600 transition-colors">Release Notes</span>
+                                                    <ExternalLink size={14} className="text-neutral-400 group-hover:text-blue-500 transition-colors" />
+                                                </Link>
+
+                                                <Link to="/privacy" target="_blank" className="flex items-center justify-between p-4 hover:bg-neutral-50 dark:hover:bg-neutral-950 transition-colors group border-b border-neutral-100 dark:border-neutral-800">
+                                                    <span className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 group-hover:text-blue-600 transition-colors">Privacy Policy</span>
+                                                    <ExternalLink size={14} className="text-neutral-400 group-hover:text-blue-500 transition-colors" />
+                                                </Link>
+
+                                                <Link to="/terms" target="_blank" className="flex items-center justify-between p-4 hover:bg-neutral-50 dark:hover:bg-neutral-950 transition-colors group border-b border-neutral-100 dark:border-neutral-800">
+                                                    <span className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 group-hover:text-blue-600 transition-colors">Terms of Service</span>
+                                                    <ExternalLink size={14} className="text-neutral-400 group-hover:text-blue-500 transition-colors" />
+                                                </Link>
+
+                                                <a href="https://github.com/Dheeraj07-cmd/OmnibusAI" target="_blank" rel="noreferrer" className="flex items-center justify-between p-4 hover:bg-neutral-50 dark:hover:bg-neutral-950 transition-colors group">
+                                                    <span className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 group-hover:text-blue-600 transition-colors">GitHub Repository</span>
+                                                    <ExternalLink size={14} className="text-neutral-400 group-hover:text-blue-500 transition-colors" />
                                                 </a>
                                             </div>
                                         </div>

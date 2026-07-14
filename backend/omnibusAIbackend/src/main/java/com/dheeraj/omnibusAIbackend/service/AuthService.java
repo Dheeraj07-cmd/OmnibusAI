@@ -36,7 +36,7 @@ public class AuthService {
         repository.save(user);
         var jwtToken = jwtService.generateToken(user);
 
-        return new AuthenticationResponse(jwtToken, user.getEmail(), user.getName(),user.getProfilePicture(), false);
+        return new AuthenticationResponse(jwtToken, user.getEmail(), user.getName(), user.getProfilePicture(), user.isTwoFactorEnabled(), false);
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -49,12 +49,12 @@ public class AuthService {
 
         // Check for 2FA
         if (user.isTwoFactorEnabled()) {
-            return new AuthenticationResponse(null, user.getEmail(), user.getName(),user.getProfilePicture(), true);
+            return new AuthenticationResponse(null, user.getEmail(), user.getName(), user.getProfilePicture(), user.isTwoFactorEnabled(),true);
         }
 
         // No 2FA required, give token
         var jwtToken = jwtService.generateToken(user);
-        return new AuthenticationResponse(jwtToken, user.getEmail(), user.getName(),user.getProfilePicture(), false);
+        return new AuthenticationResponse(jwtToken, user.getEmail(), user.getName(), user.getProfilePicture(), user.isTwoFactorEnabled(),false);
     }
 
     public AuthenticationResponse verify2FALogin(Verify2FARequest request) {
@@ -72,7 +72,7 @@ public class AuthService {
 
         // OTP is valid, give token.
         var jwtToken = jwtService.generateToken(user);
-        return new AuthenticationResponse(jwtToken, user.getEmail(), user.getName(),user.getProfilePicture(), false);
+        return new AuthenticationResponse(jwtToken, user.getEmail(), user.getName(), user.getProfilePicture(), user.isTwoFactorEnabled(),false);
     }
 }
 

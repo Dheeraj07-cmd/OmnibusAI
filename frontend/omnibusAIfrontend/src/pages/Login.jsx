@@ -39,7 +39,8 @@ export default function Login() {
       setAuth(res.data.token, {
         email: res.data.email,
         name: res.data.name,
-        profilePicture: res.data.profilePicture
+        profilePicture: res.data.profilePicture,
+        isTwoFactorEnabled: res.data.isTwoFactorEnabled
       });
       navigate('/dashboard');
     }
@@ -57,7 +58,7 @@ export default function Login() {
 
     try {
       const res = await api.post('/auth/verify-2fa', { email, code: parseInt(otpCode) });
-      setAuth(res.data.token, { email: res.data.email, name: res.data.name, profilePicture: res.data.profilePicture });
+      setAuth(res.data.token, { email: res.data.email, name: res.data.name, profilePicture: res.data.profilePicture, isTwoFactorEnabled: res.data.isTwoFactorEnabled });
       navigate('/dashboard');
     } catch (err) {
       setError('Invalid Authenticator Code.');
