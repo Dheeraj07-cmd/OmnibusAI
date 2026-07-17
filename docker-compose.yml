@@ -1,0 +1,58 @@
+version: "3.9"
+
+networks:
+  omnibus-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+
+services:
+
+  backend:
+    build:
+      context: ./backend/omnibusAIbackend
+      dockerfile: Dockerfile
+    container_name: omnibus-backend
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - MYSQL_URI=${MYSQL_URI}
+      - MYSQL_USERNAME=${MYSQL_USERNAME}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - JWT_EXPIRATION=${JWT_EXPIRATION}
+      - JWT_SECRET=${JWT_SECRET}
+      - OPENAI_BASE_URI=${OPENAI_BASE_URI}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_MODEL=${OPENAI_MODEL}
+      - GEMINI_BASE_URI=${GEMINI_BASE_URI}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GEMINI_MODEL=${GEMINI_MODEL}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+      - PORT=${PORT}
+    networks:
+      - omnibus-network
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1" ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 45s
+
+  frontend:
+    build:
+      context: ./frontend/omnibusAIfrontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=${VITE_API_URL}
+    container_name: omnibusAI-frontend
+    ports:
+      - "3000:80"
+    networks:
+      - omnibus-network
+    depends_on:
+      backend:
+        condition: service_healthy

@@ -2,7 +2,7 @@ import axios from 'axios';
 import useAuthStore from '../store/authStore';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8080/api', // Connects to Spring Boot backend
+  baseURL: import.meta.env.VITE_API_URL, // Connects to Spring Boot backend
   headers: {
     'Content-Type': 'application/json',
   },
